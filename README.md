@@ -15,17 +15,23 @@ A temporary repository to host an interview project.
 *Project may work in Homestead, but I cannot guarentee it. These steps are for Apache 2.4*
 
 Update httpd.conf:
-  `DocumentRoot "c:/Apache24/htdocs/sharpspring-project-rpz/public"`
-  `ServerName localhost`
+
+`DocumentRoot "c:/Apache24/htdocs/sharpspring-project-rpz/public"`
+
+`ServerName localhost`
+
 Clone the project. Ensure Lumen compatable PHP configuration.
 
 ## Create the Database 
-Point MySql Command Line to `sharpspring-project-rpz`
+Point MySql Command Line to sharpspring-project-rpz
+
 `source sharpspringdb.sql`
+
 Creates database 'c1', 'notes' table, and 'users' table.
 
 ## Seed the Database 
-Point Command Line to `sharpspring-project-rpz`
+Point Command Line to sharpspring-project-rpz
+
 `php artisan db:seed`
 
 ## Visit App
