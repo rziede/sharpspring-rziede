@@ -14,3 +14,10 @@ something something
 
 ## Seed the Database 
 `php artisan db:seed`
+
+## Seeded Users
+email: test@test.com
+pw: $sh4rpspr1nG$
+
+email: joe@joe.com
+pw: joe123
