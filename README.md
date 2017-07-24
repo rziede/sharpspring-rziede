@@ -13,6 +13,7 @@ A temporary repository to host an interview project.
 
 ## Set Up Apache 2.4 Server
 *Project may work in Homestead, but I cannot guarentee it. These steps are for Apache 2.4*
+
 Update httpd.conf:
   `DocumentRoot "c:/Apache24/htdocs/sharpspring-project-rpz/public"`
   `ServerName localhost`
