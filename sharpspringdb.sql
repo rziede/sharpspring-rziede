@@ -37,3 +37,9 @@ CREATE TABLE `notes` (
     REFERENCES users(`id`)
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE USER 'sharp'@'localhost' IDENTIFIED BY 'sharptest';
+
+GRANT USAGE ON *.* TO 'sharp'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, DROP ON `c1`.* TO 'sharp'@'localhost';
