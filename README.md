@@ -9,8 +9,7 @@ A temporary repository to host an interview project.
   * Laravel would obviate the usage of Handlebars.js in this project via blades.
 * Since this is a disposable project, I directly included dependencies instead of setting up NPM/Bower etc. 
   * Makes hard-coded assumptions of _localhost_ purely for expedience.
-* Developed and tested in _Apache 2.4_. A bug with Vagrant made using Homestead an issue in my local environment
-  * https://github.com/mitchellh/vagrant/issues/2113
+* Developed and tested in _Apache 2.4_.
 
 ## Set Up Apache 2.4 Server
 *Project may work in Homestead, but I cannot guarentee it. These steps are for Apache 2.4*
