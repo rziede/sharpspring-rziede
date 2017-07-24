@@ -34,7 +34,9 @@ class LoginController extends Controller
 
     // If incomplete request...
     if( empty($email) || empty($pw) ) {
-      // TODO: Handle
+      // Do not authenticate, generate response.
+      $reject = array( "logged_in" => false );
+      return response()->json($reject);
     }
 
     // Find user by email.
@@ -42,7 +44,9 @@ class LoginController extends Controller
 
     // If user not found...
     if( empty($user) ) {
-      // TODO: Handle
+      // Do not authenticate, generate response.
+      $reject = array( "logged_in" => false );
+      return response()->json($reject);
     }
 
     $hash = $user["password"];

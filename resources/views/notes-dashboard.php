@@ -76,7 +76,7 @@
             <input type="hidden" id="note-id" value="" />
             <form id="note-form">
               <div class="form-group">
-                <label for="title-input">Note Title</label>
+                <label for="title-input" id="title-label">Note Title</label>
                 <input type="text" class="form-control" id="title-input" placeholder="Title..." maxlength="120" required>
                 <small id="title-help" class="form-text text-muted">120 character limit.</small>
               </div>

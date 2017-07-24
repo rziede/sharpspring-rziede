@@ -25,9 +25,11 @@ $(document).ready(function() {
         console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
     };
 
+    var user_id = window.localStorage.getItem("user_id");
+
     $.ajax({
       method: 'GET',
-      url: `notes/1`,
+      url: `notes/${user_id}`,
       cache: false,
       async: false,
       data: {},
@@ -91,25 +93,20 @@ $(document).ready(function() {
     var reload = e.data.reloadCallback;
 
     var successCallback = function(response){
-      console.log("SUCCESS CALLBACK - SAVE CLICK");
-      console.log(response);
-      console.log(reload);
       reload();
 
     };
     var errorCallback = function(jqXHR, textStatus, errorThrown) {
-      console.log("ERROR CALLBACK - SAVE CLICK");
       console.log(JSON.stringify(jqXHR));
       console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
     };
 
-    console.log(title);
-    console.log(body);
-    console.log(noteId);
-
     if(!title) {
-      // TODO: We require a title; Add validation msg.
+      //We require a title; Style validation hint.
+      $("#title-label").addClass("text-danger");
       return;
+    } else {
+      $("#title-label").removeClass("text-danger");
     }
 
     // If we are editing pre-existing note...
@@ -131,8 +128,6 @@ $(document).ready(function() {
     // If we are setting a new note...
     } else {
 
-      console.log(`USER ID: ${userId}`);
-      console.log(successCallback);
       $.ajax({
         method: 'POST',
         url: `notes`,

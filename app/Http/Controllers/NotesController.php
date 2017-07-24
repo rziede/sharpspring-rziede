@@ -28,7 +28,12 @@ class NotesController extends Controller
    */
   public function getNotes($user_id)
   {
-    // TODO: Verify user against session
+    // Verify user against session
+    if ( !isset($_SESSION['user_id']) || $_SESSION['user_id'] != $user_id) {
+      $response = "error";
+      return $response;
+    }
+
     $user = \App\Models\User::find($user_id);
     $notes = \App\Models\User::find($user_id)->notes;
     $response = ["user" => $user, "notes" => $notes];
@@ -42,8 +47,15 @@ class NotesController extends Controller
    */
   public function deleteNote($id)
   {
-    // TODO: Verify note ownership against user against session
     $note  = \App\Models\Note::find($id);
+
+    // Verify user against session
+    $user_id = $note->user_id;
+    if ( !isset($_SESSION['user_id']) || $_SESSION['user_id'] != $user_id) {
+      $response = "error";
+      return $response;
+    }
+
     $note->delete();
     return response()->json('success');
   }
@@ -54,8 +66,15 @@ class NotesController extends Controller
    * Edits a note's title and body.
    */
   public function editNote(Request $request,$id){
-    // TODO: Verify note ownership against user against session
     $note  = \App\Models\Note::find($id);
+
+    // Verify user against session
+    $user_id = $note->user_id;
+    if ( !isset($_SESSION['user_id']) || $_SESSION['user_id'] != $user_id) {
+      $response = "error";
+      return $response;
+    }
+
     $note->title = $request->input('title');
     $note->body = $request->input('body');
     $note->save();
@@ -69,8 +88,15 @@ class NotesController extends Controller
    */
   public function saveNote(Request $request)
   {
-    // TODO: Verify note ownership against user against session
     $note = \App\Models\Note::create($request->all());
+
+    // Verify user against session
+    $user_id = $note->user_id;
+    if ( !isset($_SESSION['user_id']) || $_SESSION['user_id'] != $user_id) {
+      $response = "error";
+      return $response;
+    }
+
     return response()->json($note);
   }
 }
