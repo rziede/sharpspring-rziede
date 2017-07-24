@@ -144,4 +144,9 @@ $(document).ready(function() {
     }
   }
   $(document).on( "click", "#save-note", {reloadCallback: loadNotes}, saveClick );
+
+  // Logout button behavior.
+  $(document).on("click", "#logout",{}, function(){
+    window.location.href = `../login`;
+  });
 });
