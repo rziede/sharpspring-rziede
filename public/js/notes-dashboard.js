@@ -1,15 +1,29 @@
 $(document).ready(function() {
 
+  // Block submit behavior.
   $("form").submit( function(e) {
     e.preventDefault();
   });
 
+  // Compile Handlebars.js template.
   var source = $("#notes-template").html();
   var template = Handlebars.compile(source);
 
+  // Handle updating notes display.
   var loadNotes = function(){
 
     $('#note-modal').modal('hide');
+
+    var successCallback = function(response){
+        // Update template context and deliver to content div.
+        var html = template(response);
+        $("#notes-dashboard").html(html);
+    };
+
+    var errorCallback = function(jqXHR, textStatus, errorThrown) {
+        console.log(JSON.stringify(jqXHR));
+        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+    };
 
     $.ajax({
       method: 'GET',
@@ -17,24 +31,16 @@ $(document).ready(function() {
       cache: false,
       async: false,
       data: {},
-      success: function(response){
-          console.log(response);
-          console.log(template);
-          var html = template(response);
-          console.log(html);
-          $("#notes-dashboard").html(html);
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log(JSON.stringify(jqXHR));
-          console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-      }
+      success: successCallback,
+      error: errorCallback
     });
-
   };
+
+  // Initialize the notes list on page load.
   loadNotes();
 
+  // Varies note-modal display based on context. Pre-loads fields for Edit.
   $('#note-modal').on('show.bs.modal', function(e) {
-    //console.log(e);
     var noteId = $(e.relatedTarget).attr('note-id');
 
     if( noteId ) {
@@ -52,18 +58,15 @@ $(document).ready(function() {
     }
   });
 
+  // Deletes a note and refreshes the list.
   var deleteClick = function(e) {
     var noteId = $(e.target).attr('note-id');
     var reload = e.data.reloadCallback;
 
     var successCallback = function(response){
-      console.log("SUCCESS CALLBACK - DELETE CLICK");
-      console.log(response);
-      console.log(reload);
       reload();
     };
     var errorCallback = function(jqXHR, textStatus, errorThrown) {
-      console.log("SUCCESS CALLBACK - DELETE CLICK");
       console.log(JSON.stringify(jqXHR));
       console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
     };
@@ -79,6 +82,7 @@ $(document).ready(function() {
   };
   $(document).on( "click", ".delete-btn", {reloadCallback: loadNotes}, deleteClick );
 
+  // Saves or Updates a note and refreshes the list.
   var saveClick = function(e) {
     var title = $("#title-input").val();
     var body = $("#body-input").val();
@@ -144,6 +148,5 @@ $(document).ready(function() {
       });
     }
   }
-  //$("#save-note").click( {reloadCallback: loadNotes}, saveClick );
   $(document).on( "click", "#save-note", {reloadCallback: loadNotes}, saveClick );
 });

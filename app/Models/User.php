@@ -30,6 +30,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+    /**
+     * A User hasMany Note.
+     */
     public function notes()
     {
       return $this->hasMany('App\Models\Note');

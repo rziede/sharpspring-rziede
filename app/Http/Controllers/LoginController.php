@@ -7,65 +7,66 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function showLogin()
-    {
-      // Unset session and show login page.
-      session_unset();
-      return view('login');
+
+  /*
+   * showLogin
+   *
+   * Logout the user and serve the login page.
+   */
+  public function showLogin()
+  {
+    session_unset();
+    return view('login');
+  }
+
+  /*
+   * login
+   *
+   * Compares submitted credentials to DB user and hash.
+   * Adds user to session if successful and notifies client of login success
+   * or failure.
+   */
+  public function login(Request $request)
+  {
+    $data = $request->all();
+    $email = $data["email"];
+    $pw = $data["password"];
+
+    // If incomplete request...
+    if( empty($email) || empty($pw) ) {
+      // TODO: Handle
     }
 
-    // Reinventing the wheel! Why add stateful auth to Lumen when Laravel exists?
-    public function login(Request $request)
-    {
-      $data = $request->all();
-      $email = $data["email"];
-      $pw = $data["password"];
+    // Find user by email.
+    $user = \App\Models\User::where('email', $email)->first();
 
-      // If incomplete request...
-      if( empty($email) || empty($pw) ) {
-
-      }
-
-      // See if user exists.
-      $user = \App\Models\User::where('email', $email)->first();
-
-      // If user not found...
-      if( empty($user) ) {
-
-      }
-
-      $hash = $user["password"];
-      $password_match = password_verify($pw, $hash);
-      $user_name = $user["name"];
-      $user_id = $user["id"];
-
-      // If password matches...
-      if( $password_match ) {
-
-        // Update session.
-        $_SESSION["logged_in"] = true;
-        $_SESSION['user_name'] = $user_name;
-        $_SESSION['user_id'] = $user_id;
-
-        $accept = array( "logged_in" => true, "user_name" => $user_name, "user_id" => $user_id );
-        //$accept = json_encode($accept);
-        //return $accept;
-        return response()->json($accept);
-
-      } else {
-        // Do not authenticate.
-        $reject = array( "logged_in" => false );
-        //$reject = json_encode($reject);
-        //return $reject;
-        return response()->json($reject);
-      }
+    // If user not found...
+    if( empty($user) ) {
+      // TODO: Handle
     }
 
-    // public function authenticate()
-    // {
-    //   if (Auth::attempt(['email' => $email, 'password' => $password])) {
-    //     // Authentication passed...
-    //     return redirect()->intended('dashboard');
-    //   }
-    // }
+    $hash = $user["password"];
+    $password_match = password_verify($pw, $hash);
+    $user_name = $user["name"];
+    $user_id = $user["id"];
+
+    // If password matches...
+    if( $password_match ) {
+
+      // Update session.
+      $_SESSION["logged_in"] = true;
+      $_SESSION['user_name'] = $user_name;
+      $_SESSION['user_id'] = $user_id;
+
+      // Generate response.
+      $accept = array( "logged_in" => true, "user_name" => $user_name, "user_id" => $user_id );
+      return response()->json($accept);
+
+    } else {
+
+      // Do not authenticate, generate response.
+      $reject = array( "logged_in" => false );
+      return response()->json($reject);
+    }
+  }
 }
